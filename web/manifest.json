@@ -1,6 +1,6 @@
 {
-    "name": "workspace",
-    "short_name": "workspace",
+    "name": "quiz123",
+    "short_name": "quiz123",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

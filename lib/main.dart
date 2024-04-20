@@ -1,165 +1,294 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key});
 
   @override
   Widget build(BuildContext context) {
-    Color darkblue = Color.fromRGBO(0, 0, 139, 1.0); // Adjusted opacity to 1.0
+    Color darkblue = Color.fromRGBO(21, 32, 112, 1.0); // Dark blue color
+
     return MaterialApp(
-      title: 'Search Example',
+      title: 'Flutter Demo',
       theme: ThemeData(
-        appBarTheme: AppBarTheme(backgroundColor: darkblue), // Set app bar background color
-        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: darkblue), // Corrected colorScheme
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
-      home: const MySearchWidget(title: 'Weather Forecast'), // Pass the title to MySearchWidget
+      home: MyHomePage(
+        title: 'Weather Forecast',
+        darkblue: darkblue, // Pass the dark blue color to MyHomePage
+      ),
     );
   }
 }
 
-class MySearchWidget extends StatefulWidget {
-  final String title; // Declare title property
+class MyHomePage extends StatefulWidget {
+  final String title;
+  final Color darkblue; // Declare dark blue color property
 
-  const MySearchWidget({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title, required this.darkblue})
+      : super(key: key);
 
   @override
-  _MySearchWidgetState createState() => _MySearchWidgetState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MySearchWidgetState extends State<MySearchWidget> {
+class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
   late String searchQuery;
-  late List<String> searchResults;
 
   @override
   void initState() {
     super.initState();
     searchQuery = '';
-    searchResults = [];
   }
 
-  void performSearch(String query) {
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  void _performSearch(String query) {
     setState(() {
       searchQuery = query;
-      searchResults = allItems.where((item) => item.toLowerCase().contains(query.toLowerCase())).toList();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.lightBlue[100], // Set background color to a lighter shade of blue
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.wb_sunny, size: 30), // Sun icon
-            SizedBox(width: 5), // Add spacing between the icon and text
-            Text(
-              '14 gradus', // Text next to the sun
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(50.0),
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
-            alignment: Alignment.center,
-            color: Colors.lightBlue, // Set background color
-            child: TextField(
-              onChanged: performSearch,
-              decoration: InputDecoration(
-                hintText: 'Enter City Name',
-                hintStyle: TextStyle(color: Colors.indigo),
-                filled: true, // Set filled to true
-                fillColor: Colors.white, // Set background color to white
-              ),
-              style: TextStyle(color: Colors.blue),
-            ),
+        backgroundColor: widget.darkblue, // Use the dark blue color for app bar
+        title: Center(
+          child: Text(
+            widget.title,
+            style: TextStyle(color: Colors.white), // Set title color to white
           ),
         ),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(height: 20), // Add space between title and search field
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white, // Set background color to white
+                  borderRadius: BorderRadius.circular(15), // Rounded corners
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Colors.transparent, // Set background color of icon container to transparent
+                      ),
+                      child: Icon(Icons.search, color: widget.darkblue), // Set icon color to dark blue
+                    ),
+                    SizedBox(width: 10), // Add space between icon and text field
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(45),
+                        ),
+                        child: TextField(
+                          onChanged: _performSearch,
+                          decoration: InputDecoration(
+                            hintText: 'Enter City Name',
+                            border: InputBorder.none, // Remove default border
+                            contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
+                            fillColor: Colors.white, // Set background color to white
+                            filled: true, // Fill the background
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 40), // Add space between search field and "Pushkin 154, Taraz"
             Text(
               'Pushkin 154, Taraz',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24.0,
-              ),
+              style: TextStyle(color: Colors.black87, fontSize: 30, fontWeight: FontWeight.bold), // Increase font size
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 20), // Add space between "Pushkin 154, Taraz" and "Friday, April 19, 2024"
             Text(
-              'Friday, April 19, 2024', // Updated text
-              style: TextStyle(
-                fontSize: 16.0, // Set middle font size
-                color: Colors.blue, // Set custom color for the date
-              ),
-              textAlign: TextAlign.center, // Align center
+              'Friday, April 19, 2024',
+              style: TextStyle(color: Colors.indigo, fontSize: 22),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 20), // Add space between "Friday, April 19, 2024" and sun icon
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'sun ', // Sun text
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
+                Icon(Icons.wb_sunny, color: Colors.yellow[100], size: 90), // Add sun icon
+                SizedBox(width: 10), // Add space between sun icon and text
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          '14°F',
+                          style: TextStyle(color: Colors.white, fontSize: 60, fontWeight: FontWeight.w100), // Set text color to white and font weight to extra thin
+                        ), // Add text "6°F"
 
-                  ),
-                ),
-                Text(
-                  '14 gradus', // Temperature text
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                    color: Colors.orange, // Set custom color for the temperature
-                  ),
+                      ],
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      'LIGHT SNOW',
+                      style: TextStyle(color: Colors.black54, fontSize: 20),
+                    ), // Add text "LIGHT SNOW"
+                  ],
                 ),
               ],
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 20), // Add space between text and snow icons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    Icon(Icons.ac_unit, color: Colors.indigo, size: 50),
+                    SizedBox(height: 5),
+                    Text('5', style: TextStyle(color: Colors.white,fontSize: 30)),
+                    SizedBox(height: 5),
+                    Text('km/hr', style: TextStyle(color: Colors.indigo,fontSize: 17)),
+                  ],
+                ),
+                SizedBox(width: 70),
+                Column(
+                  children: [
+                    Icon(Icons.ac_unit, color: Colors.indigo, size: 50),
+                    SizedBox(height: 5),
+                    Text('3', style: TextStyle(color: Colors.white,fontSize: 30)),
+                    SizedBox(height: 5),
+                    Text('%', style: TextStyle(color: Colors.indigo,fontSize: 17)),
+                  ],
+                ),
+                SizedBox(width: 70),
+                Column(
+                  children: [
+                    Icon(Icons.ac_unit, color: Colors.indigo, size: 50),
+                    SizedBox(height: 5),
+                    Text('20', style: TextStyle(color: Colors.white,fontSize: 30)),
+                    SizedBox(height: 5),
+                    Text('%', style: TextStyle(color: Colors.indigo,fontSize: 17)),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: 20), // Add space between snow icons and text
             Text(
-              widget.title, // Access the title passed from MyApp
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20.0,
-                color: Colors.blue, // Set custom color for the title
+              '7 DAY WEATHER FORECAST',
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ), // Add text "7 DAY WEATHER FORECAST"
+            SizedBox(height: 20), // Add space between text and bottom edge
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  SizedBox(width: 20),
+                  Container(
+                    width: 250,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Friday',
+                          style: TextStyle(color: Colors.black, fontSize: 30),
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '6°F  ',
+                              style: TextStyle(color: Colors.blue[300], fontSize: 25),
+                            ),
+                            Icon(Icons.wb_sunny, color: Colors.yellow, size: 40),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: 250,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Saturday',
+                          style: TextStyle(color: Colors.black, fontSize: 30),
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '5°F  ',
+                              style: TextStyle(color: Colors.blue[300], fontSize: 25),
+                            ),
+                            Icon(Icons.wb_cloudy, color: Colors.grey, size: 40),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: 250,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Friday',
+                          style: TextStyle(color: Colors.black, fontSize: 30),
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '6°F  ',
+                              style: TextStyle(color: Colors.blue[300], fontSize: 25),
+                            ),
+                            Icon(Icons.wb_sunny, color: Colors.yellow, size: 40),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
-        ),
-      ),
-      bottomNavigationBar: Container(
-        height: 120,
-        color: Colors.lightBlue, // Set background color
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return Container(
-              width: 120,
-              margin: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.lightBlue, // Set background color
-                borderRadius: BorderRadius.circular(45),
-              ),
-            );
-          },
         ),
       ),
     );
   }
 }
-
-// List of items to search
-List<String> allItems = [];
