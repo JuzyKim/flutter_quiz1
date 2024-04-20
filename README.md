@@ -1,16 +1,7 @@
 # quiz123
 
-A new Flutter project.
+iT IS APP ABOUT WEATHER
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Снимок экрана 2024-04-21 005009](https://github.com/JuzyKim/flutter_quiz1/assets/144226513/0d927200-bc65-40ef-9a5c-ac7f61a68759)
+![Снимок экрана 2024-04-21 005026](https://github.com/JuzyKim/flutter_quiz1/assets/144226513/fbc168ad-3d08-440e-a278-8dc827dfaf97)
